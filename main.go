@@ -1,8 +1,8 @@
 package main
 
 import (
-	"github.com/zrygan/Baysian-Election-Auditing/counting"
 	"github.com/zrygan/Baysian-Election-Auditing/election"
+	counting "github.com/zrygan/Baysian-Election-Auditing/tabulation"
 	"github.com/zrygan/Baysian-Election-Auditing/util"
 )
 

@@ -7,7 +7,7 @@ type PluralityVote struct {
 
 // Each voter can vote for one or more candidate
 // len(Candidates) <= m (the number of candidates in the election)
-type ApprovalVote struct {
+type BlockVote struct {
 	Candidates []string
 }
 
@@ -32,11 +32,11 @@ type Vote interface {
 }
 
 func (v PluralityVote) GetType() VoteType    { return Plurality }
-func (v ApprovalVote) GetType() VoteType     { return Approval }
+func (v BlockVote) GetType() VoteType        { return Approval }
 func (v RankedChoiceVote) GetType() VoteType { return RankedChoice }
 
 func (v PluralityVote) PrintCandidates() { println(v.Candidate) }
-func (v ApprovalVote) PrintCandidates() {
+func (v BlockVote) PrintCandidates() {
 	for _, c := range v.Candidates {
 		println(c)
 	}
@@ -55,8 +55,8 @@ func NewPluralityVote(c string) *PluralityVote {
 	return &pVote
 }
 
-func NewApprovalVote(c []string) *ApprovalVote {
-	aVote := ApprovalVote{
+func NewApprovalVote(c []string) *BlockVote {
+	aVote := BlockVote{
 		Candidates: c,
 	}
 
