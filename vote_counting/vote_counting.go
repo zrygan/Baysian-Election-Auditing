@@ -64,7 +64,7 @@ func VoteCount(data []string, Election *election.Election) {
 	}
 }
 
-func ProcessPlurality(candidateName string) *vote.PluralityVote {
+func checkCandidate(candidateName string) int {
 	// check if the candidate name is in the array
 	// this uses a python script
 	candidatesAsString := candidate.CandidatesAsString()
@@ -73,24 +73,55 @@ func ProcessPlurality(candidateName string) *vote.PluralityVote {
 
 	if err != nil {
 		fmt.Println("Failed to run `check_candidate.py` script.")
-		return nil
+		return -1
 	}
+	ret, err := strconv.Atoi(strings.TrimSpace(string(out)))
 
-	data := strings.TrimSpace(string(out))
-	if data == "-1" {
-		// if the index of the candidate in Candidates is not found
-		if candidate.AddMissingCandidates {
-			candidate.Candidates = append(candidate.Candidates, *candidate.NewCandidate(candidateName, 1))
-		}
-
+	if err == nil {
+		return ret
 	} else {
-		i, err := strconv.Atoi(data)
-		if err != nil {
-			fmt.Println("Error converting output of `check_candidate.py` to a usable data type")
-			return nil
-		}
-		candidate.Candidates[i].Votes += 1
+		fmt.Println("Error converting output of `check_candidate.py` to a usable data type")
+		return -1
+	}
+}
+
+func CountPlurality(candidateName string) *vote.PluralityVote {
+	index := checkCandidate(candidateName)
+
+	// if the index of the candidate is not found
+	// do we want to add missing candidates in the list?
+	if index == -1 && candidate.AddMissingCandidates {
+		newCandidate := *candidate.NewCandidate(candidateName, 1)
+		_ = append(candidate.Candidates, newCandidate)
+		return vote.NewPluralityVote(newCandidate)
+	} else if index != -1 && !candidate.AddMissingCandidates {
+		// if the index of the candidate is found
+		votedCandidate := candidate.Candidates[index]
+		votedCandidate.Votes += 1
+		return vote.NewPluralityVote(votedCandidate)
 	}
 
 	return nil
+}
+
+func CountApproval(candidateName []string) *vote.ApprovalVote {
+	var votedCandidates []candidate.Candidate
+	for _, name := range candidateName {
+		index := checkCandidate(name)
+
+		if index == -1 && candidate.AddMissingCandidates {
+			newCandidate := *candidate.NewCandidate(name, 1)
+			candidate.Candidates = append(candidate.Candidates, newCandidate)
+			votedCandidates = append(votedCandidates, newCandidate)
+		} else if index != -1 {
+			candidate.Candidates[index].Votes += 1
+			votedCandidates = append(votedCandidates, candidate.Candidates[index])
+		}
+	}
+
+	if len(votedCandidates) == 0 {
+		return nil
+	} else {
+		return vote.NewApprovalVote(votedCandidates)
+	}
 }

@@ -14,8 +14,8 @@ func main() {
 	d := candidate.NewCandidate("Another", 1)
 	election.AddElectionCandidate(d, my_election)
 
-	vote_counting.ProcessPlurality("Hello")
-
+	vote_counting.CountPlurality("Hello")
+	vote_counting.CountApproval([]string{"Hello", "Another"})
 	for c := range candidate.Candidates {
 		println(candidate.Candidates[c].Name, candidate.Candidates[c].Votes)
 	}

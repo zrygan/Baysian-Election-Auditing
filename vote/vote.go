@@ -21,3 +21,27 @@ type ApprovalVote struct {
 type RankedChoiceVote struct {
 	CandidateRanking map[int]candidate.Candidate
 }
+
+func NewPluralityVote(c candidate.Candidate) *PluralityVote {
+	pVote := PluralityVote{
+		Candidate: c,
+	}
+
+	return &pVote
+}
+
+func NewApprovalVote(c []candidate.Candidate) *ApprovalVote {
+	aVote := ApprovalVote{
+		Candidates: c,
+	}
+
+	return &aVote
+}
+
+func NewRankedChoiceVote(c map[int]candidate.Candidate) *RankedChoiceVote {
+	rVote := RankedChoiceVote{
+		CandidateRanking: c,
+	}
+
+	return &rVote
+}
