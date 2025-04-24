@@ -17,7 +17,7 @@ func NewElection(M int, Candidates []candidate.Candidate) *Election {
 	return &election
 }
 
-func AddElectionCandidate(NewCandidate candidate.Candidate, election *Election) {
+func AddElectionCandidate(NewCandidate *candidate.Candidate, election *Election) {
 	election.M++
-	election.Candidates = append(election.Candidates, NewCandidate)
+	election.Candidates = append(election.Candidates, *NewCandidate)
 }
