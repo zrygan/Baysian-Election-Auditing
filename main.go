@@ -1,12 +1,18 @@
 package main
 
 import (
-	"fmt"
-
-	BEA "github.com/zrygan/Baysian-Election-Auditing/candidate"
+	"github.com/zrygan/Baysian-Election-Auditing/counting"
+	"github.com/zrygan/Baysian-Election-Auditing/election"
+	"github.com/zrygan/Baysian-Election-Auditing/util"
 )
 
 func main() {
-	c := BEA.NewCandidate("Hello, World!", 0)
-	fmt.Printf("Candidate Name: %s\nVotes: %d", c.Name, c.Votes)
+	var data []string = util.FromFileName("vote.v")
+	actualElection := election.NewElection()
+	candidates := make(map[string]int)
+	counting.VoteCount(data, actualElection, candidates)
+
+	for name, votes := range candidates {
+		println(name, votes)
+	}
 }
