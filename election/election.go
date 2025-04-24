@@ -29,8 +29,8 @@ type Election interface {
 	GetType() ElectionType
 }
 
-func (e PluralityElection) GetType() ElectionType { return Plurality }
-func (e MajorityElection) GetType() ElectionType  { return Majority }
+func (e *PluralityElection) GetType() ElectionType { return Plurality }
+func (e *MajorityElection) GetType() ElectionType  { return Majority }
 
 func NewPluralityElection() *PluralityElection {
 	election := PluralityElection{
