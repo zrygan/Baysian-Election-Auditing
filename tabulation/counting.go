@@ -17,11 +17,11 @@ func incrementElectionVotes(name string, candidates map[string]int) {
 }
 
 // Count the votes one-by-one
-func VoteCount(data []string, actualElection *election.Election, candidates map[string]int) {
+func VoteCount(data []string, actualElection election.Election, candidates map[string]int) {
 	for index, line := range data {
 		splits := strings.Split(line, " ")
 
-		switch e := (*actualElection).(type) {
+		switch e := actualElection.(type) {
 		case *election.PluralityElection:
 			if splits[0] == "p" {
 				// if the vote is pluralistic (one person)

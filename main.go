@@ -11,7 +11,7 @@ func main() {
 	actualElection := election.NewPluralityElection()
 	var actualElectionInterface election.Election = actualElection
 	candidates := make(map[string]int)
-	tabulation.VoteCount(data, &actualElectionInterface, candidates)
+	tabulation.VoteCount(data, actualElectionInterface, candidates)
 
 	for name, votes := range candidates {
 		println(name, votes)
