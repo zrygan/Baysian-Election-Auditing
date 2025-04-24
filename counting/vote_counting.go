@@ -8,16 +8,32 @@ import (
 	"github.com/zrygan/Baysian-Election-Auditing/vote"
 )
 
+func incrementElectionVotes(name string, candidates map[string]int) {
+	if _, exists := candidates[name]; !exists {
+		candidates[name] = 1
+	} else {
+		candidates[name] += 1
+	}
+}
+
 // Count the votes one-by-one
-func VoteCount(data []string, actualElection *election.Election) {
+func VoteCount(data []string, actualElection *election.Election, candidates map[string]int) {
+
 	for index, line := range data {
 		splits := strings.Split(line, " ")
 
-		// if the vote is pluralistic (one person)
 		if splits[0] == "p" {
-			actualElection.Votes = append(actualElection.Votes, vote.NewPluralityVote(splits[1]))
+			// if the vote is pluralistic (one person)
+			name := splits[1]
+			incrementElectionVotes(name, candidates)
+
+			actualElection.Votes = append(actualElection.Votes, vote.NewPluralityVote(name))
 			actualElection.M++
 		} else if splits[0] == "a" {
+			// for approval vote (array of people)
+			for _, name := range splits[1:] {
+				incrementElectionVotes(name, candidates)
+			}
 			actualElection.Votes = append(actualElection.Votes, vote.NewApprovalVote(splits[1:]))
 			actualElection.M++
 		} else if splits[0] == "r" {

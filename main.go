@@ -8,12 +8,11 @@ import (
 
 func main() {
 	var data []string = util.FromFileName("vote.v")
-
 	actualElection := election.NewElection()
+	candidates := make(map[string]int)
+	counting.VoteCount(data, actualElection, candidates)
 
-	counting.VoteCount(data, actualElection)
-
-	for _, v := range actualElection.Votes {
-		v.PrintCandidates()
+	for name, votes := range candidates {
+		println(name, votes)
 	}
 }
