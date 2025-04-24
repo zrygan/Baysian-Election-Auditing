@@ -18,7 +18,7 @@ type RankedChoiceVote struct {
 	CandidateRanking map[int]string
 }
 
-type VoteType int
+type VoteType int8
 
 const (
 	Plurality VoteType = iota
