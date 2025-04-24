@@ -18,12 +18,12 @@ func FromFileName(fname string) []string {
 
 	var lines []string
 	sc := bufio.NewScanner(file)
-	if err := sc.Err(); err != nil {
-		fmt.Println("Error reading file from filename\n", err)
-	}
-
 	for sc.Scan() {
 		lines = append(lines, sc.Text())
+	}
+
+	if err := sc.Err(); err != nil {
+		fmt.Println("Error reading file from filename\n", err)
 	}
 
 	if len(lines) == 0 {

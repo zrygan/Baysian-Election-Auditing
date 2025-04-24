@@ -37,7 +37,8 @@ func VoteCount(data []string, actualElection *election.Election, candidates map[
 			actualElection.Votes = append(actualElection.Votes, vote.NewApprovalVote(splits[1:]))
 			actualElection.M++
 		} else if splits[0] == "r" {
-			panic("Not implemented vote counting for RankedChoice")
+			// Placeholder for RankedChoice vote counting
+			fmt.Printf("RankedChoice vote counting is not yet implemented. Skipping line %d.\n", index+1)
 		} else {
 			panic(fmt.Sprintf("Vote type at line %d is not `p`, `a`, or `r`.", index+1))
 		}
