@@ -1,28 +1,53 @@
 package vote
 
-import (
-	"github.com/zrygan/Baysian-Election-Auditing/candidate"
-)
-
 // Each voter can only vote for one candidate
 type PluralityVote struct {
-	Candidate candidate.Candidate
+	Candidate string
 }
 
 // Each voter can vote for one or more candidate
 // len(Candidates) <= m (the number of candidates in the election)
 type ApprovalVote struct {
-	Candidates []candidate.Candidate
+	Candidates []string
 }
 
 // Each voter can vote for one or more candidates, ranking each one
 // from 1 to the number of candidates they want to vote for
 // len(CandidateRanking) <= m (the number of candidates in the election)
 type RankedChoiceVote struct {
-	CandidateRanking map[int]candidate.Candidate
+	CandidateRanking map[int]string
 }
 
-func NewPluralityVote(c candidate.Candidate) *PluralityVote {
+type VoteType int
+
+const (
+	Plurality VoteType = iota
+	Approval
+	RankedChoice
+)
+
+type Vote interface {
+	GetType() VoteType
+	PrintCandidates()
+}
+
+func (v PluralityVote) GetType() VoteType    { return Plurality }
+func (v ApprovalVote) GetType() VoteType     { return Approval }
+func (v RankedChoiceVote) GetType() VoteType { return RankedChoice }
+
+func (v PluralityVote) PrintCandidates() { println(v.Candidate) }
+func (v ApprovalVote) PrintCandidates() {
+	for _, c := range v.Candidates {
+		println(c)
+	}
+}
+func (v RankedChoiceVote) PrintCandidates() {
+	for r, c := range v.CandidateRanking {
+		println(r, " : ", c)
+	}
+}
+
+func NewPluralityVote(c string) *PluralityVote {
 	pVote := PluralityVote{
 		Candidate: c,
 	}
@@ -30,7 +55,7 @@ func NewPluralityVote(c candidate.Candidate) *PluralityVote {
 	return &pVote
 }
 
-func NewApprovalVote(c []candidate.Candidate) *ApprovalVote {
+func NewApprovalVote(c []string) *ApprovalVote {
 	aVote := ApprovalVote{
 		Candidates: c,
 	}
@@ -38,7 +63,7 @@ func NewApprovalVote(c []candidate.Candidate) *ApprovalVote {
 	return &aVote
 }
 
-func NewRankedChoiceVote(c map[int]candidate.Candidate) *RankedChoiceVote {
+func NewRankedChoiceVote(c map[int]string) *RankedChoiceVote {
 	rVote := RankedChoiceVote{
 		CandidateRanking: c,
 	}
