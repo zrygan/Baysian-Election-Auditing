@@ -28,22 +28,43 @@ git clone https://github.com/zrygan/Baysian-Election-Auditing.git
 cd Baysian-Election-Auditing
 ```
 
-1. Download the dependencies of the project, if any:
+2. Create a vote aggregate file (see [Voting](https://github.com/zrygan/Baysian-Election-Auditing?tab=readme-ov-file#voting)).
+3. Create a `Go` file with the main function with the template file below:
+```go
+package main
 
+import (
+    "github.com/zrygan/Baysian-Election-Auditing/src/election"
+    tb "github.com/zrygan/Baysian-Election-Auditing/src/tabulation_certification"
+    "github.com/zrygan/Baysian-Election-Auditing/src/util"
+)
+
+func main(){
+    data := util.FromFileName(
+        // path/to/your/vote/file
+    )
+	if data == nil {
+		return
+	}
+
+    e := ___                                // election type
+	candidates := make(map[string]int)      // create a map (string, int) for the candidates of the election
+	tb.Tabulation(data, e, candidates)      // tabulate or count the votes of each candidate from the vote file 
+	pr := tb.PrepareResults(candidates, e)  // the results of the election
+	tb.PrintElectionResult(pr)              // print the results of the election
+}
+``` 
+
+### If you don't want too much fuss, just run the tests
+
+1. Simply run the bash script:
 ```bash
-go mod tidy
+$ bash tests.sh
 ```
-
-1. Run the project:
-
-```bash
+2. Alternatively, you may:
+```cmd
+cd tests
 go run .
-```
-
-If instead you want to build the file (and get an executable) without running it, then simply:
-
-```bash
-go build .
 ```
 
 ## Building the Paper
@@ -57,19 +78,18 @@ git clone https://github.com/zrygan/Baysian-Election-Auditing.git
 
 cd Baysian-Election-Auditing
 ```
-
-1. Simply get the Jupyter Book package via `pip`:
+2. Simply get the Jupyter Book package via `pip`:
 ```pip install jupyter-book```
 
-1. Then, run the command:
+3. Then, run the command:
 ```jupyter-book build --all docs```
 
-> You may also use the `book.bash` command to do step (2) automatically. If you're on Windows, it will also open the file in your web browser.
+> You may also use the `book.sh` command to do step (2) automatically. If you're on Windows, it will also open the file in your web browser.
 
 ## Voting
 
 The `vote` file is the file containing all the votes. This file has no specific extension or filename
-since you will indicate the filename when calling `FromFileName()`. The `vote` file (at the moment) should
+since you will indicate the filename when calling `util.FromFileName()`. The `vote` file (at the moment) should
 only contain one voting type (however pluralistic and approval voting type in one `vote` file does work).
 
 Each line in the `vote` file should follow one of the formats below, the format depends on the vote type.
@@ -96,6 +116,6 @@ r <NameOfCandidate> <RankOfCandidate> ... <NameOfCandidate> <RankOfCandidate>
 Furthermore, if you want to rank n candidates you must have ranks 1 to n
 present in your vote
 
-## Election Audit
+## Election Auditing (Rivest & Shen)
 
 Read the accompanying paper of this project.
