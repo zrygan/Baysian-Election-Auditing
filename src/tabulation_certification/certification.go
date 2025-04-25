@@ -3,7 +3,7 @@ package tabulation_certification
 import (
 	"fmt"
 
-	"github.com/zrygan/Baysian-Election-Auditing/election"
+	"github.com/zrygan/Baysian-Election-Auditing/src/election"
 )
 
 type ElectionResult struct {
