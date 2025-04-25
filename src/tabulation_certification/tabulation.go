@@ -4,8 +4,8 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/zrygan/Baysian-Election-Auditing/election"
-	"github.com/zrygan/Baysian-Election-Auditing/vote"
+	"github.com/zrygan/Baysian-Election-Auditing/src/election"
+	"github.com/zrygan/Baysian-Election-Auditing/src/vote"
 )
 
 // Tabulate the votes

@@ -1,7 +1,7 @@
 package election
 
 import (
-	"github.com/zrygan/Baysian-Election-Auditing/vote"
+	"github.com/zrygan/Baysian-Election-Auditing/src/vote"
 )
 
 type ElectionType int
